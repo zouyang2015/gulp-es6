@@ -86,222 +86,101 @@ __webpack_require__(2);
 "use strict";
 
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
-// 数据结构
-// set(集合,并且数据是唯一的), WeakSet, Map, WeakMap
-// 作用: 去重
-// 'add', 'delete', 'clear', 'has'
-// key,value是相同值,可以使用数组的遍历方法
+// Map、Set与Array的对比
+// 能使用Map,不使用数组，如果考虑存储的唯一性考虑set, 放弃使用obj做存储，数组也要放弃
 {
-  // 向set里增加元素要用add这个方法
-  var list = new Set();
-  // Set添加元素是用add
-  list.add(5);
-  list.add(7);
-  console.log(list.size); // 2 list的长度
-}
-
-{
-  var arr = [1, 2, 3, 4, 5];
-  var _list = new Set(arr);
-  console.log(_list.size); // 5
-}
-
-{
-  var _list2 = new Set();
-  _list2.add(1);
-  _list2.add(2);
-  _list2.add(1); // 没有成功添加进入
-  console.log(_list2); // Set(2) {1, 2}
-}
-
-{
-  // 去重-但不做数据类型的转换
-  var _arr = [1, 2, 3, 1, '2'];
-  var _list3 = new Set(_arr);
-  console.log(_list3); // Set(4) {1, 2, 3, "2"}
-}
-
-{
-  // 'add', 'delete', 'clear', 'has'
-  var _arr2 = ['add', 'delete', 'clear', 'has'];
-  var _list4 = new Set(_arr2);
-  console.log('has', _list4.has('add')); // has true
-  console.log('delete', _list4.delete('add'), _list4); // delete true Set(3) {"delete", "clear", "has"}
-  _list4.clear('list');
-  console.log(_list4); // Set(0) {}
-}
-
-{
-  // 遍历
-  var _arr3 = ['add', 'delete', 'clear', 'has'];
-  var _list5 = new Set(_arr3);
-
-  // add
-  // delete
-  // clear
-  // has
-  var _iteratorNormalCompletion = true;
-  var _didIteratorError = false;
-  var _iteratorError = undefined;
-
-  try {
-    for (var _iterator = _list5.keys()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-      var key = _step.value;
-
-      console.log(key);
-    }
-
-    // add
-    // delete
-    // clear
-    // has
-  } catch (err) {
-    _didIteratorError = true;
-    _iteratorError = err;
-  } finally {
-    try {
-      if (!_iteratorNormalCompletion && _iterator.return) {
-        _iterator.return();
-      }
-    } finally {
-      if (_didIteratorError) {
-        throw _iteratorError;
-      }
-    }
-  }
-
-  var _iteratorNormalCompletion2 = true;
-  var _didIteratorError2 = false;
-  var _iteratorError2 = undefined;
-
-  try {
-    for (var _iterator2 = _list5.values()[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-      var value = _step2.value;
-
-      console.log(value);
-    }
-  } catch (err) {
-    _didIteratorError2 = true;
-    _iteratorError2 = err;
-  } finally {
-    try {
-      if (!_iteratorNormalCompletion2 && _iterator2.return) {
-        _iterator2.return();
-      }
-    } finally {
-      if (_didIteratorError2) {
-        throw _iteratorError2;
-      }
-    }
-  }
-
-  var _iteratorNormalCompletion3 = true;
-  var _didIteratorError3 = false;
-  var _iteratorError3 = undefined;
-
-  try {
-    for (var _iterator3 = _list5[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-      var _value = _step3.value;
-
-      console.log(_value);
-    }
-
-    // add add
-    // delete delete
-    // clear clear
-    // has has
-  } catch (err) {
-    _didIteratorError3 = true;
-    _iteratorError3 = err;
-  } finally {
-    try {
-      if (!_iteratorNormalCompletion3 && _iterator3.return) {
-        _iterator3.return();
-      }
-    } finally {
-      if (_didIteratorError3) {
-        throw _iteratorError3;
-      }
-    }
-  }
-
-  var _iteratorNormalCompletion4 = true;
-  var _didIteratorError4 = false;
-  var _iteratorError4 = undefined;
-
-  try {
-    for (var _iterator4 = _list5.entries()[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-      var _step4$value = _slicedToArray(_step4.value, 2),
-          _value2 = _step4$value[0],
-          _key = _step4$value[1];
-
-      console.log(_value2, _key);
-    }
-  } catch (err) {
-    _didIteratorError4 = true;
-    _iteratorError4 = err;
-  } finally {
-    try {
-      if (!_iteratorNormalCompletion4 && _iterator4.return) {
-        _iterator4.return();
-      }
-    } finally {
-      if (_didIteratorError4) {
-        throw _iteratorError4;
-      }
-    }
-  }
-
-  _list5.forEach(function (item) {
-    console.log(item);
-  });
-}
-
-{
-  // weakList
-  // 接收的key值是对象
-  // 没有size属行，不能用clear
-  // 不能遍历
-  // 不检测地址是否被垃圾回收掉了
-  // 'add', 'delete', 'has'
-  // 不能遍历
-  var weakList = new WeakSet();
-  var arg = {};
-  weakList.add(arg);
-  // weakList.add(2) // 出错，不能是非对象数据类型的
-  console.log(weakList); // WeakSet {Object {}}
-}
-{
-  // Map (key, value)
-  // Map里的Key可以是任意数据类型
+  // 数据结构横向对比，增，查，改，删
   var map = new Map();
-  var _arr4 = ['123'];
-  // Map添加元素是用set
-  map.set(_arr4, 456);
-  console.log(map); // Map(1) {["123"] => 456}
-  // 用get获取数据
-  console.log(map.get(_arr4)); // 456
+  var array = [];
+  // 增
+  map.set('t', 1);
+  array.push({ t: 1 });
+  console.info('map-array', map, array); // Map(1) {"t" => 1} [Object]
+  // 查
+  var map_exist = map.has('t');
+  var array_exist = array.find(function (item) {
+    return item.t;
+  });
+  console.info('map-array', map_exist, array_exist); // true Object {t: 1}
+  // 改
+  map.set('t', 2);
+  array.forEach(function (item) {
+    return item.t ? item.t = 2 : '';
+  });
+  console.info('map-array', map, array); // Map(1) {"t" => 2} [Object]
+  // 删除
+  map.delete('t');
+  var index = array.findIndex(function (item) {
+    return item.t;
+  });
+  array.splice(index, 1);
+  console.info('map-array', map, array); // Map(0) {} []
 }
 
 {
-  // Map第2种定义方式
-  var _map = new Map([['a', 123], ['b', 456]]);
-  console.log(_map); // Map(2) {"a" => 123, "b" => 456}
-  console.log(_map.size); // 2
-  // delete
-  console.log(_map.delete('a'), _map); // true Map(1) {"b" => 456}
-  // clear
-  // 遍历同set
+  // set
+  var set = new Set();
+  var _array = [];
+  // 增
+  set.add({ t: 1 });
+  _array.push({ t: 1 });
+  console.info('set-array', set, _array); // Set(1) {Object {t: 1}} [Object]
+  // 查
+  var set_exist = set.has({ t: 1 }); // *
+  var _array_exist = _array.find(function (item) {
+    return item.t;
+  });
+  console.info('map-array', set_exist, _array_exist);
+  // 改
+  set.forEach(function (item) {
+    return item.t ? item.t = 2 : '';
+  });
+  _array.forEach(function (item) {
+    return item.t ? item.t = 2 : '';
+  });
+  console.info('map-array', set, _array); // Set(1) {Object {t: 2}} [Object]
+  // 删除
+  set.forEach(function (item) {
+    return item.t ? set.delete(item) : '';
+  });
+  var _index = _array.findIndex(function (item) {
+    return item.t;
+  });
+  _array.splice(_index, 1);
+  console.info('map-array', set, _array); // Set(0) {} []
 }
 
+// Map与Set与Object做对比
 {
-  // weakMap
-  // 接收的key值是对象
-  // 没有size属行，不能用clear
-  // 不能遍历
-  var weakmap = new WeakMap();
+  var item = { t: 1 };
+  var _map = new Map();
+  var _set = new Set();
+  var obj = {};
+
+  // 增
+  _map.set('t', 1);
+  _set.add(item);
+  obj['t'] = 1;
+  console.log(_map, _set, obj);
+
+  // 查
+  console.info({ // {map: true, set: true, obj: true}
+    map: _map.has('t'),
+    set: _set.has(item),
+    obj: 't' in obj
+  });
+
+  // 改
+  _map.set('t', 2);
+  item.t = 2;
+  obj['t'] = 2;
+  console.log(_map, _set, obj); // Map(1) {"t" => 2} Set(1) {Object {t: 2}} Object {t: 2}
+
+  // 删除
+  _map.delete('t');
+  _set.delete(item);
+  delete obj['t'];
+  console.log(_map, _set, obj); // Map(0) {} Set(0) {} Object {}
 }
 
 /***/ })
