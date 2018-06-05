@@ -86,101 +86,124 @@ __webpack_require__(2);
 "use strict";
 
 
-// Map、Set与Array的对比
-// 能使用Map,不使用数组，如果考虑存储的唯一性考虑set, 放弃使用obj做存储，数组也要放弃
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+// Proxy代理-连接用户和中间最真实对象的一个层
+// Reflect反射-反射的是object
 {
-  // 数据结构横向对比，增，查，改，删
-  var map = new Map();
-  var array = [];
-  // 增
-  map.set('t', 1);
-  array.push({ t: 1 });
-  console.info('map-array', map, array); // Map(1) {"t" => 1} [Object]
-  // 查
-  var map_exist = map.has('t');
-  var array_exist = array.find(function (item) {
-    return item.t;
+  var obj = {
+    time: '2017-03-11',
+    name: 'net',
+    _r: 123
+  };
+
+  var monitor = new Proxy(obj, {
+    // 拦截对象属性的读取
+    get: function get(target, key) {
+      return target[key].replace('2017', '2018');
+    },
+
+    // 拦截对象设置属性
+    set: function set(target, key, value) {
+      return key === 'name' ? target[key] = value : target[key];
+    },
+
+    // 拦截key in object操作
+    has: function has(target, key) {
+      return key === 'name' ? target[key] : false;
+    },
+
+    // 拦截删除
+    deleteProperty: function deleteProperty(target, key) {
+      if (key.indexOf('_') > -1) {
+        delete target[key];
+        return true;
+      } else {
+        return target[key];
+      }
+    },
+
+    // 拦截Object.keys,Object.getOwnPropertySymbols, Object.getOwnPropertyNames
+    ownKeys: function ownKeys(target) {
+      return Object.keys(target).filter(function (item) {
+        return item !== 'time';
+      });
+    }
   });
-  console.info('map-array', map_exist, array_exist); // true Object {t: 1}
-  // 改
-  map.set('t', 2);
-  array.forEach(function (item) {
-    return item.t ? item.t = 2 : '';
-  });
-  console.info('map-array', map, array); // Map(1) {"t" => 2} [Object]
-  // 删除
-  map.delete('t');
-  var index = array.findIndex(function (item) {
-    return item.t;
-  });
-  array.splice(index, 1);
-  console.info('map-array', map, array); // Map(0) {} []
+
+  console.log(monitor.name, monitor.time); // net 2018-03-11
+
+  monitor.time = '2018';
+  monitor.name = 'zou';
+  console.log(monitor.name, monitor.time); // zou 2018-03-11
+
+  console.log('has', 'name' in monitor, 'time' in monitor); //has true false
+
+  // delete monitor.time
+  // delete monitor._r
+  // console.log(monitor) // Proxy {time: "2017-03-11", name: "zou"}
+
+  console.log('ownKeys', Object.keys(monitor)); // ["name", "_r"]
+  console.log('ownKeys', Object.getOwnPropertyNames(monitor)); // ["name", "_r"]
 }
 
 {
-  // set
-  var set = new Set();
-  var _array = [];
-  // 增
-  set.add({ t: 1 });
-  _array.push({ t: 1 });
-  console.info('set-array', set, _array); // Set(1) {Object {t: 1}} [Object]
-  // 查
-  var set_exist = set.has({ t: 1 }); // *
-  var _array_exist = _array.find(function (item) {
-    return item.t;
-  });
-  console.info('map-array', set_exist, _array_exist);
-  // 改
-  set.forEach(function (item) {
-    return item.t ? item.t = 2 : '';
-  });
-  _array.forEach(function (item) {
-    return item.t ? item.t = 2 : '';
-  });
-  console.info('map-array', set, _array); // Set(1) {Object {t: 2}} [Object]
-  // 删除
-  set.forEach(function (item) {
-    return item.t ? set.delete(item) : '';
-  });
-  var _index = _array.findIndex(function (item) {
-    return item.t;
-  });
-  _array.splice(_index, 1);
-  console.info('map-array', set, _array); // Set(0) {} []
+  var _obj = {
+    time: '2017-03-11',
+    name: 'net',
+    _r: 123
+
+    // 直接使用Reflect
+  };console.log('Reflect get', Reflect.get(_obj, 'time')); // 2017-03-11
+  Reflect.set(_obj, 'name', 'zou');
+  console.log('Reflect get', Reflect.get(_obj, 'name')); // zou
+  console.log('has', Reflect.has(_obj, 'name')); // true
 }
 
-// Map与Set与Object做对比
+// Proxy,Reflect适用场景
 {
-  var item = { t: 1 };
-  var _map = new Map();
-  var _set = new Set();
-  var obj = {};
+  var validator = function validator(target, _validator) {
+    return new Proxy(target, {
+      _validator: _validator,
+      set: function set(target, key, value, proxy) {
+        if (target.hasOwnProperty(key)) {
+          var va = this._validator[key];
+          if (!!va(value)) {
+            return Reflect.set(target, key, value, proxy);
+          } else {
+            throw Error('\u4E0D\u80FD\u8BBE\u7F6E' + key);
+          }
+        } else {
+          throw Error(key + ' \u4E0D\u5B58\u5728');
+        }
+      }
+    });
+  };
 
-  // 增
-  _map.set('t', 1);
-  _set.add(item);
-  obj['t'] = 1;
-  console.log(_map, _set, obj);
+  var personValidators = {
+    name: function name(val) {
+      return typeof val === 'string';
+    },
+    age: function age(val) {
+      return typeof val === 'number' && val > 18;
+    }
+  };
 
-  // 查
-  console.info({ // {map: true, set: true, obj: true}
-    map: _map.has('t'),
-    set: _set.has(item),
-    obj: 't' in obj
-  });
+  var Person = function Person(name, age) {
+    _classCallCheck(this, Person);
 
-  // 改
-  _map.set('t', 2);
-  item.t = 2;
-  obj['t'] = 2;
-  console.log(_map, _set, obj); // Map(1) {"t" => 2} Set(1) {Object {t: 2}} Object {t: 2}
+    this.name = name;
+    this.age = age;
+    return validator(this, personValidators);
+  };
 
-  // 删除
-  _map.delete('t');
-  _set.delete(item);
-  delete obj['t'];
-  console.log(_map, _set, obj); // Map(0) {} Set(0) {} Object {}
+  var person = new Person('lilei', 30);
+  console.log('person', person); // Proxy {name: "lilei", age: 30}
+
+  person.name = 48; // 报错  不能设置name
+  // person.name = 'zou'
+  // person.age = 12 // 报错  不能设置age
+  console.log(person.name, person.age);
 }
 
 /***/ })
