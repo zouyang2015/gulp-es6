@@ -9615,240 +9615,133 @@ module.exports = function (regExp, replace) {
 "use strict";
 
 
-// Generator
-// 基本概念：异步编程的一种解决方案
-// next函数的用法
-// yield*的语法：遇到就不会向下执行了，再执行需要调用next函数
-{
-  // 基本定义Generator函数
-  var tell = /*#__PURE__*/regeneratorRuntime.mark(function tell() {
-    return regeneratorRuntime.wrap(function tell$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            console.log('start');
-            _context.next = 3;
-            return 'a';
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-          case 3:
-            _context.next = 5;
-            return 'b';
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-          case 5:
-            return _context.abrupt('return', 'c');
-
-          case 6:
-          case 'end':
-            return _context.stop();
-        }
-      }
-    }, tell, this);
+function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {
+  var desc = {};
+  Object['ke' + 'ys'](descriptor).forEach(function (key) {
+    desc[key] = descriptor[key];
   });
+  desc.enumerable = !!desc.enumerable;
+  desc.configurable = !!desc.configurable;
 
-  var k = tell(); // 执行tell时遇到第一个yield时停下来。
-  console.log(k.next()); // Object {value: "a", done: false}
-  console.log(k.next()); // Object {value: "b", done: false}
-  console.log(k.next()); // Object {value: "c", done: true}
-  console.log(k.next()); // Object {value: undefined, done: true}
-}
-
-{
-  var obj = {};
-  obj[Symbol.iterator] = /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-    return regeneratorRuntime.wrap(function _callee$(_context2) {
-      while (1) {
-        switch (_context2.prev = _context2.next) {
-          case 0:
-            _context2.next = 2;
-            return 1;
-
-          case 2:
-            _context2.next = 4;
-            return 2;
-
-          case 4:
-            _context2.next = 6;
-            return 3;
-
-          case 6:
-          case 'end':
-            return _context2.stop();
-        }
-      }
-    }, _callee, this);
-  });
-  var _iteratorNormalCompletion = true;
-  var _didIteratorError = false;
-  var _iteratorError = undefined;
-
-  try {
-    for (var _iterator = obj[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-      var value = _step.value;
-
-      console.log('value', value); // 1, 2, 3
-    }
-  } catch (err) {
-    _didIteratorError = true;
-    _iteratorError = err;
-  } finally {
-    try {
-      if (!_iteratorNormalCompletion && _iterator.return) {
-        _iterator.return();
-      }
-    } finally {
-      if (_didIteratorError) {
-        throw _iteratorError;
-      }
-    }
+  if ('value' in desc || desc.initializer) {
+    desc.writable = true;
   }
+
+  desc = decorators.slice().reverse().reduce(function (desc, decorator) {
+    return decorator(target, property, desc) || desc;
+  }, desc);
+
+  if (context && desc.initializer !== void 0) {
+    desc.value = desc.initializer ? desc.initializer.call(context) : void 0;
+    desc.initializer = undefined;
+  }
+
+  if (desc.initializer === void 0) {
+    Object['define' + 'Property'](target, property, desc);
+    desc = null;
+  }
+
+  return desc;
 }
 
+// Decorator -修饰器，用来修改类的行为
+// 修饰器是一个函数，修改行为，修改类的行为（扩展类的功能）
+
 {
-  // 优势-状态机
-  var state = /*#__PURE__*/regeneratorRuntime.mark(function state() {
-    return regeneratorRuntime.wrap(function state$(_context3) {
-      while (1) {
-        switch (_context3.prev = _context3.next) {
-          case 0:
-            if (false) {
-              _context3.next = 9;
-              break;
-            }
+  var _desc, _value, _class;
 
-            _context3.next = 3;
-            return 'A';
+  var readonly = function readonly(target, name, descriptor) {
+    descriptor.writable = false;
+    return descriptor;
+  };
 
-          case 3:
-            _context3.next = 5;
-            return 'B';
+  var Test = (_class = function () {
+    function Test() {
+      _classCallCheck(this, Test);
+    }
 
-          case 5:
-            _context3.next = 7;
-            return 'C';
-
-          case 7:
-            _context3.next = 0;
-            break;
-
-          case 9:
-          case 'end':
-            return _context3.stop();
-        }
+    _createClass(Test, [{
+      key: 'time',
+      value: function time() {
+        return '2017-03-11';
       }
-    }, state, this);
-  });
-  var status = state();
-  console.log(status.next()); // Object {value: "A", done: false}
-  console.log(status.next()); // Object {value: "B", done: false}
-  console.log(status.next()); // Object {value: "C", done: false}
-  console.log(status.next()); // Object {value: "A", done: false}
-  console.log(status.next()); // Object {value: "B", done: false}
-  console.log(status.next()); // Object {value: "C", done: false}
-}
+    }]);
 
-{
-  // console.log(11)
-  // let state = async function () {
-  //   while (1) {
-  //     await 'A'
-  //     await 'B'
-  //     await 'C'
-  //   }
+    return Test;
+  }(), (_applyDecoratedDescriptor(_class.prototype, 'time', [readonly], Object.getOwnPropertyDescriptor(_class.prototype, 'time'), _class.prototype)), _class);
+
+
+  var test = new Test();
+
+  // test.time = function() {
+  //   console.log('aaa')  // 报错 Cannot assign to read only property 'time' of object '#<Test>'
   // }
-  // console.log(22)
-  // let status = state()
-  // console.log(status.next())  // Object {value: "A", done: false}
-  // console.log(status.next())  // Object {value: "B", done: false}
-  // console.log(status.next())  // Object {value: "C", done: false}
-  // console.log(status.next())  // Object {value: "A", done: false}
-  // console.log(status.next())  // Object {value: "B", done: false}
-  // console.log(status.next())  // Object {value: "C", done: false}
-  // console.log(33)
+  console.log(test.time());
 }
 
 {
-  // 抽奖剩余次数的限制
-  var draw = function draw(count) {
-    // 具体抽奖逻辑
-    console.info('\u5269\u4F59' + count + '\u6B21');
+  var _class2;
+
+  var typename = function typename(target, name, descriptor) {
+    target.myname = 'hello';
   };
-  var residue = /*#__PURE__*/regeneratorRuntime.mark(function residue(count) {
-    return regeneratorRuntime.wrap(function residue$(_context4) {
-      while (1) {
-        switch (_context4.prev = _context4.next) {
-          case 0:
-            if (!(count > 0)) {
-              _context4.next = 6;
-              break;
-            }
 
-            count--;
-            _context4.next = 4;
-            return draw(count);
+  var _Test = typename(_class2 = function _Test() {
+    _classCallCheck(this, _Test);
+  }) || _class2;
 
-          case 4:
-            _context4.next = 0;
-            break;
-
-          case 6:
-          case 'end':
-            return _context4.stop();
-        }
-      }
-    }, residue, this);
-  });
-
-  var star = residue(5);
-  var btn = document.createElement('button');
-  btn.id = 'start';
-  btn.textContent = '抽奖';
-  document.body.appendChild(btn);
-  document.querySelector('#start').addEventListener('click', function () {
-    star.next();
-  }, false);
+  console.log('', _Test.myname);
 }
 
 {
-  // ajax长轮询
-  var ajax = /*#__PURE__*/regeneratorRuntime.mark(function ajax() {
-    return regeneratorRuntime.wrap(function ajax$(_context5) {
-      while (1) {
-        switch (_context5.prev = _context5.next) {
-          case 0:
-            _context5.next = 2;
-            return new Promise(function (resolve, reject) {
-              setTimeout(function () {
-                console.log(1);
-                resolve({ code: 0 });
-              }, 200);
-            });
+  // 第三方库修饰器的JS库： core-decorators; npm install core-decorators
+}
 
-          case 2:
-          case 'end':
-            return _context5.stop();
+{
+  var _dec, _dec2, _desc2, _value2, _class3;
+
+  var log = function log(type) {
+    return function (target, name, descriptor) {
+      var src_method = descriptor.value;
+      descriptor.value = function () {
+        for (var _len = arguments.length, arg = Array(_len), _key = 0; _key < _len; _key++) {
+          arg[_key] = arguments[_key];
         }
-      }
-    }, ajax, this);
-  });
 
-  var pull = function pull() {
-    var generator = ajax();
-    var step = generator.next();
-    console.log('step', step);
-    step.value.then(function (d) {
-      console.log('d', d);
-      if (d.code !== 0) {
-        setTimeout(function () {
-          console.log('wait');
-          pull();
-        }, 1000);
-      } else {
-        console.log(d);
-      }
-    });
+        src_method.apply(target, arg);
+        console.log('log ' + type);
+      };
+    };
   };
 
-  pull();
+  var AD = (_dec = log('show'), _dec2 = log('click'), (_class3 = function () {
+    function AD() {
+      _classCallCheck(this, AD);
+    }
+
+    _createClass(AD, [{
+      key: 'show',
+      value: function show() {
+        console.info('ad is show');
+      }
+    }, {
+      key: 'click',
+      value: function click() {
+        console.log('ad is click');
+      }
+    }]);
+
+    return AD;
+  }(), (_applyDecoratedDescriptor(_class3.prototype, 'show', [_dec], Object.getOwnPropertyDescriptor(_class3.prototype, 'show'), _class3.prototype), _applyDecoratedDescriptor(_class3.prototype, 'click', [_dec2], Object.getOwnPropertyDescriptor(_class3.prototype, 'click'), _class3.prototype)), _class3));
+
+
+  var ad = new AD();
+  ad.show();
+  ad.click();
 }
 
 /***/ })
